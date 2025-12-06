@@ -6,6 +6,13 @@ import sys
 from .data import get_game_data
 from .pdf import create_key_pdf, generate_cards
 
+# Available games and their display names for filenames
+GAME_CHOICES = ["meet_me_in_st_louis", "vintage_christmas_films"]
+GAME_FILE_PREFIXES = {
+    "meet_me_in_st_louis": "MeetMeInStLouis",
+    "vintage_christmas_films": "VintageChristmasFilms",
+}
+
 
 def main() -> int:
     """Main entry point for the bingo CLI."""
@@ -25,11 +32,12 @@ Examples:
     key_parser = subparsers.add_parser("key", help="Generate a bingo key PDF")
     key_parser.add_argument(
         "-o", "--output",
-        default="BingoKey_MeetMeInStLouis.pdf",
-        help="Output filename (default: BingoKey_MeetMeInStLouis.pdf)",
+        default=None,
+        help="Output filename (default: BingoKey_<game>.pdf)",
     )
     key_parser.add_argument(
         "-g", "--game",
+        choices=GAME_CHOICES,
         default="meet_me_in_st_louis",
         help="Game/movie name (default: meet_me_in_st_louis)",
     )
@@ -49,11 +57,12 @@ Examples:
     )
     cards_parser.add_argument(
         "-p", "--prefix",
-        default="BingoCard_MeetMeInStLouis",
-        help="Filename prefix (default: BingoCard_MeetMeInStLouis)",
+        default=None,
+        help="Filename prefix (default: BingoCard_<game>)",
     )
     cards_parser.add_argument(
         "-g", "--game",
+        choices=GAME_CHOICES,
         default="meet_me_in_st_louis",
         help="Game/movie name (default: meet_me_in_st_louis)",
     )
@@ -72,17 +81,22 @@ Examples:
 
     if args.command == "key":
         items = get_game_data(args.game)
-        create_key_pdf(items, args.output)
+        game_prefix = GAME_FILE_PREFIXES[args.game]
+        output = args.output or f"BingoKey_{game_prefix}.pdf"
+        create_key_pdf(items, output, game=args.game)
         return 0
 
     if args.command == "cards":
         items = get_game_data(args.game)
+        game_prefix = GAME_FILE_PREFIXES[args.game]
+        prefix = args.prefix or f"BingoCard_{game_prefix}"
         filenames = generate_cards(
             items,
             num_cards=args.num,
             output_dir=args.output_dir,
-            prefix=args.prefix,
+            prefix=prefix,
             win_at=args.win_at,
+            game=args.game,
         )
         print(f"Generated {len(filenames)} cards")
         return 0
