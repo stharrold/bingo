@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bingo"
+version = "0.1.0"
+description = "Generate bingo cards for movie watching parties"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "Samuel Harrold", email = "samuel.harrold@gmail.com"}
+]
+requires-python = ">=3.11"
+dependencies = [
+    "reportlab>=4.0",
+]
+
+[project.scripts]
+bingo = "bingo.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/stharrold/bingo"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "UP"]
+ignore = ["E402"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
