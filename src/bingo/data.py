@@ -65,7 +65,7 @@ VINTAGE_CHRISTMAS_FILMS = [
     BingoItem(9, "\U0001F3BF\U0001F6F7", "Sleigh ride begins"),
     BingoItem(10, "\U0001F3BF\U0001F3D4", "Winter landscape"),
     BingoItem(11, "\U0001F3BF\U0001F40E", "Horse-drawn sleigh"),
-    BingoItem(12, "\U0001F3BF\u2744\uFE0F", "Snowfall scene"),
+    BingoItem(12, "\U0001F3BF\U00002744\uFE0F", "Snowfall scene"),
     BingoItem(13, "\U0001F3BF\U0001F46B", "Couples riding together"),
     BingoItem(14, "\U0001F3BF\U0001F3A4", "Singing/merriment"),
     BingoItem(15, "\U0001F3BF\U0001F3E1", "Arrival at destination"),
