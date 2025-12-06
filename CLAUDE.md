@@ -4,11 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repository Is
 
-**Bingo card generator for movie watching parties:**
-- Generates PDF bingo cards with emoji icons
-- Creates bingo keys showing all items
-- Cards are designed to win at a specific moment in the movie
-- Uses Noto Emoji font for cross-platform emoji rendering
+**Bingo card generator for movie watching parties.** Generates PDF bingo cards with emoji icons that are designed to win at a specific moment in the movie (default: item 20 of 30).
 
 ## Essential Commands
 
@@ -23,56 +19,30 @@ podman-compose run --rm dev <command>
 uv run <command>
 
 # Common operations
-podman-compose run --rm dev pytest                    # Run tests
+podman-compose run --rm dev pytest                    # Run all tests
 podman-compose run --rm dev pytest -v -k test_name    # Single test
 podman-compose run --rm dev ruff check .              # Lint
-podman-compose run --rm dev ruff check --fix .        # Auto-fix
+podman-compose run --rm dev ruff check --fix .        # Auto-fix lint
 podman-compose run --rm dev bingo key                 # Generate key PDF
 podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
-
-# Or without container:
-uv sync
-uv run pytest
-uv run bingo key
 ```
 
-## Project Structure
+## Architecture
 
-```
-bingo/
-├── src/bingo/
-│   ├── __init__.py
-│   ├── cli.py          # Command-line interface
-│   ├── data.py         # Bingo items data (Meet Me In St. Louis)
-│   ├── card.py         # Card generation logic
-│   └── pdf.py          # PDF generation with Noto font
-├── tests/
-│   ├── test_data.py    # Data module tests
-│   ├── test_card.py    # Card generation tests
-│   └── test_pdf.py     # PDF generation tests
-├── fonts/
-│   └── NotoEmoji-VariableFont.ttf  # Bundled emoji font
-├── output/             # Generated PDFs (gitignored)
-├── .claude/            # Claude Code skills and commands
-│   ├── commands/       # Slash commands (/workflow/*, /1_specify, etc.)
-│   └── skills/         # 9 specialized skills
-├── .agents/            # Cross-tool AI config (mirrors .claude/)
-├── docs/reference/     # Workflow documentation
-├── Containerfile       # Podman container definition
-├── podman-compose.yml  # Container orchestration
-├── WORKFLOW.md         # Workflow overview
-└── pyproject.toml      # Project configuration
-```
+**Core modules in `src/bingo/`:**
+- `data.py` - Game definitions as `BingoItem(order, emoji, description)` lists
+- `card.py` - Card generation algorithm (see below)
+- `pdf.py` - PDF rendering with ReportLab and bundled Noto Emoji font
+- `cli.py` - Entry point (`bingo key`, `bingo cards`)
 
-## CLI Usage
+**Card generation algorithm (`card.py`):**
+1. Place `win_at` number in random cell
+2. Find all intersecting cells (same row, column, diagonals)
+3. Fill intersecting cells with values < `win_at` (ensures win line completes at `win_at`)
+4. Fill remaining cells with other values
+5. Validate via simulation; retry if needed
 
-```bash
-# Generate bingo key (all items listed)
-bingo key [-o OUTPUT_FILE]
-
-# Generate bingo cards
-bingo cards [-n NUM_CARDS] [-o OUTPUT_DIR] [-w WIN_AT]
-```
+**Font handling (`pdf.py`):** Noto Emoji font bundled in `fonts/` - do not gitignore.
 
 ## Adding New Games
 

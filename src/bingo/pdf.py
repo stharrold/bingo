@@ -11,6 +11,12 @@ from reportlab.pdfgen import canvas
 from .card import BingoCard
 from .data import BingoItem
 
+# Game titles for PDF headers
+GAME_TITLES = {
+    "meet_me_in_st_louis": "Meet Me In St. Louis",
+    "vintage_christmas_films": "Vintage Christmas Films",
+}
+
 # Font paths - can be overridden
 FONT_DIR = Path(__file__).parent.parent.parent / "fonts"
 NOTO_EMOJI_PATH = FONT_DIR / "NotoEmoji-VariableFont.ttf"
@@ -54,7 +60,8 @@ def create_key_pdf(
     items: list[BingoItem],
     filename: str = "BingoKey.pdf",
     title1: str = "Bingo Key:",
-    title2: str = "Meet Me In St. Louis",
+    title2: str | None = None,
+    game: str = "meet_me_in_st_louis",
 ) -> None:
     """Create a PDF with the bingo key (all items listed).
 
@@ -62,8 +69,11 @@ def create_key_pdf(
         items: List of BingoItem objects.
         filename: Output filename.
         title1: First line of title.
-        title2: Second line of title.
+        title2: Second line of title (defaults to game title).
+        game: Game name for title lookup.
     """
+    if title2 is None:
+        title2 = GAME_TITLES.get(game, game)
     register_fonts()
     text_font = get_text_font()
     emoji_font = get_emoji_font()
@@ -133,7 +143,8 @@ def create_card_pdf(
     items: list[BingoItem],
     filename: str = "BingoCard.pdf",
     title1: str = "Bingo Card:",
-    title2: str = "Meet Me In St. Louis",
+    title2: str | None = None,
+    game: str = "meet_me_in_st_louis",
 ) -> None:
     """Create a PDF with a bingo card.
 
@@ -142,8 +153,11 @@ def create_card_pdf(
         items: List of BingoItem objects for emoji mapping.
         filename: Output filename.
         title1: First line of title.
-        title2: Second line of title.
+        title2: Second line of title (defaults to game title).
+        game: Game name for title lookup.
     """
+    if title2 is None:
+        title2 = GAME_TITLES.get(game, game)
     register_fonts()
     text_font = get_text_font()
     emoji_font = get_emoji_font()
@@ -195,8 +209,9 @@ def generate_cards(
     output_dir: str = ".",
     prefix: str = "BingoCard",
     title1: str = "Bingo Card:",
-    title2: str = "Meet Me In St. Louis",
+    title2: str | None = None,
     win_at: int = 20,
+    game: str = "meet_me_in_st_louis",
 ) -> list[str]:
     """Generate multiple bingo cards as PDFs.
 
@@ -206,13 +221,17 @@ def generate_cards(
         output_dir: Directory for output files.
         prefix: Filename prefix.
         title1: First line of title.
-        title2: Second line of title.
+        title2: Second line of title (defaults to game title).
         win_at: The number at which cards should win.
+        game: Game name for title lookup.
 
     Returns:
         List of generated filenames.
     """
     from .card import generate_valid_card
+
+    if title2 is None:
+        title2 = GAME_TITLES.get(game, game)
 
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
@@ -221,7 +240,7 @@ def generate_cards(
     for i in range(1, num_cards + 1):
         card = generate_valid_card(win_at=win_at, total_items=len(items))
         filename = str(output_path / f"{prefix}_{i:02d}.pdf")
-        create_card_pdf(card, items, filename, title1, title2)
+        create_card_pdf(card, items, filename, title1, title2, game=game)
         filenames.append(filename)
 
     return filenames
