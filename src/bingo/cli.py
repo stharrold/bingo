@@ -4,6 +4,7 @@ import argparse
 import sys
 
 from .data import get_game_data
+from .html_pdf import generate_festive_cards
 from .pdf import create_key_pdf, generate_cards
 
 # Available games and their display names for filenames
@@ -73,6 +74,42 @@ Examples:
         help="Number at which cards should win (default: 20)",
     )
 
+    # Festive command (HTML output)
+    festive_parser = subparsers.add_parser("festive", help="Generate festive HTML bingo cards")
+    festive_parser.add_argument(
+        "-n", "--num",
+        type=int,
+        default=30,
+        help="Number of cards to generate (default: 30)",
+    )
+    festive_parser.add_argument(
+        "-o", "--output",
+        default=None,
+        help="Output filename (default: BingoCards_<game>_Festive.html)",
+    )
+    festive_parser.add_argument(
+        "-g", "--game",
+        choices=GAME_CHOICES,
+        default="vintage_christmas_films",
+        help="Game/movie name (default: vintage_christmas_films)",
+    )
+    festive_parser.add_argument(
+        "-w", "--win-at",
+        type=int,
+        default=20,
+        help="Number at which cards should win (default: 20)",
+    )
+    festive_parser.add_argument(
+        "--no-key",
+        action="store_true",
+        help="Exclude the cheat sheet/key page",
+    )
+    festive_parser.add_argument(
+        "--pdf",
+        action="store_true",
+        help="Also generate PDF (requires playwright)",
+    )
+
     args = parser.parse_args()
 
     if args.command is None:
@@ -99,6 +136,27 @@ Examples:
             game=args.game,
         )
         print(f"Generated {len(filenames)} cards")
+        return 0
+
+    if args.command == "festive":
+        from pathlib import Path
+        items = get_game_data(args.game)
+        game_prefix = GAME_FILE_PREFIXES[args.game]
+        output_dir = Path("output")
+        output_dir.mkdir(exist_ok=True)
+        output = args.output or str(output_dir / f"BingoCards_{game_prefix}_Festive.html")
+        generate_festive_cards(
+            items,
+            num_cards=args.num,
+            output_file=output,
+            game=args.game,
+            win_at=args.win_at,
+            include_key=not args.no_key,
+        )
+        if args.pdf:
+            from .html_pdf import html_to_pdf
+            pdf_output = output.replace(".html", ".pdf")
+            html_to_pdf(output, pdf_output)
         return 0
 
     return 1
