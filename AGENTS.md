@@ -69,8 +69,16 @@ To add a new movie/game:
 
 3. For festive cards, also update `html_pdf.py`:
    - Add color scheme to `FESTIVE_COLORS` dict
-   - Add film ranges to the `films` list in `create_festive_html()`
+   - Add sections list in `create_festive_html()` for key organization
    - Update subtitle in `subtitles` dict
+
+## Output Files
+
+Output files are git-tracked in `output/` using hyphenated naming:
+- `<slug>_card_NN.pdf` - Individual cards
+- `<slug>_cards-festive.html/pdf` - Festive card collection
+- `<slug>_key.pdf` - Answer key
+- `<slug>_introduction.md/pdf` - Movie introduction (optional)
 
 ## Quality Gates
 
