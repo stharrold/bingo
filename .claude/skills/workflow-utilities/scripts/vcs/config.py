@@ -65,9 +65,9 @@ def load_vcs_config(config_path: Path | None = None) -> dict[str, Any] | None:
         return config
 
     except yaml.YAMLError as e:
-        raise ValueError(f"Invalid YAML in {config_path}: {e}")
+        raise ValueError(f"Invalid YAML in {config_path}: {e}") from e
     except Exception as e:
-        raise ValueError(f"Error loading config from {config_path}: {e}")
+        raise ValueError(f"Error loading config from {config_path}: {e}") from e
 
 
 def validate_config(config: dict[str, Any]) -> None:

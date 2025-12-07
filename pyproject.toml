@@ -36,6 +36,9 @@ pythonpath = ["src"]
 [tool.ruff]
 line-length = 120
 target-version = "py311"
+# Exclude workflow utility scripts (not part of core bingo package)
+# .agents/ mirrors .claude/skills/ and syncs automatically
+exclude = [".agents", ".claude/skills"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "B", "UP"]

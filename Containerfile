@@ -27,11 +27,17 @@ WORKDIR /app
 # Copy dependency files first (for layer caching)
 COPY pyproject.toml uv.lock* ./
 
-# Install dependencies
-RUN uv sync --frozen 2>/dev/null || uv sync
+# Create stub for editable install (source not yet copied)
+RUN mkdir -p src/bingo && touch src/bingo/__init__.py README.md
+
+# Install dependencies (--no-install-project to skip editable install)
+RUN uv sync --frozen --no-install-project 2>/dev/null || uv sync --no-install-project
 
 # Copy project files
 COPY . .
+
+# Install project in editable mode
+RUN uv sync
 
 # Set default command
 CMD ["bash"]
