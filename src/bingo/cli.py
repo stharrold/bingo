@@ -10,8 +10,8 @@ from .pdf import create_key_pdf, generate_cards
 # Available games and their display names for filenames
 GAME_CHOICES = ["meet_me_in_st_louis", "vintage_christmas_films"]
 GAME_FILE_PREFIXES = {
-    "meet_me_in_st_louis": "MeetMeInStLouis",
-    "vintage_christmas_films": "VintageChristmasFilms",
+    "meet_me_in_st_louis": "meet-me-in-st-louis",
+    "vintage_christmas_films": "vintage-christmas-films",
 }
 
 
@@ -119,14 +119,14 @@ Examples:
     if args.command == "key":
         items = get_game_data(args.game)
         game_prefix = GAME_FILE_PREFIXES[args.game]
-        output = args.output or f"BingoKey_{game_prefix}.pdf"
+        output = args.output or f"{game_prefix}_key.pdf"
         create_key_pdf(items, output, game=args.game)
         return 0
 
     if args.command == "cards":
         items = get_game_data(args.game)
         game_prefix = GAME_FILE_PREFIXES[args.game]
-        prefix = args.prefix or f"BingoCard_{game_prefix}"
+        prefix = args.prefix or f"{game_prefix}_card"
         filenames = generate_cards(
             items,
             num_cards=args.num,
@@ -144,7 +144,7 @@ Examples:
         game_prefix = GAME_FILE_PREFIXES[args.game]
         output_dir = Path("output")
         output_dir.mkdir(exist_ok=True)
-        output = args.output or str(output_dir / f"BingoCards_{game_prefix}_Festive.html")
+        output = args.output or str(output_dir / f"{game_prefix}_cards-festive.html")
         generate_festive_cards(
             items,
             num_cards=args.num,

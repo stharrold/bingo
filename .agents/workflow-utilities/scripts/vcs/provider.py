@@ -48,7 +48,10 @@ def detect_from_remote() -> VCSProvider | None:
         - git@ssh.dev.azure.com:v3/org/project/repo
     """
     try:
-        result = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True, check=True, timeout=5)
+        result = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            capture_output=True, text=True, check=True, timeout=5,
+        )
         remote_url = result.stdout.strip()
 
         # Check GitHub patterns
@@ -79,7 +82,10 @@ def extract_azure_repo_from_remote() -> str | None:
         - https://org.visualstudio.com/project/_git/repo → repo
     """
     try:
-        result = subprocess.run(["git", "remote", "get-url", "origin"], capture_output=True, text=True, check=True, timeout=5)
+        result = subprocess.run(
+            ["git", "remote", "get-url", "origin"],
+            capture_output=True, text=True, check=True, timeout=5,
+        )
         remote_url = result.stdout.strip()
 
         # Pattern 1: https://dev.azure.com/org/project/_git/repo

@@ -17,12 +17,12 @@ FESTIVE_COLORS = {
         "text": "#2F4F4F",  # Dark slate gray
     },
     "meet_me_in_st_louis": {
-        "primary": "#4169E1",  # Royal blue
-        "secondary": "#DC143C",  # Crimson
+        "primary": "#8B0000",  # Dark red (Victorian theme)
+        "secondary": "#FFD700",  # Gold
         "accent": "#FFD700",  # Gold
-        "bg": "#FFFAF0",  # Floral white
+        "bg": "#FFF8E7",  # Cream/antique
         "border": "#8B4513",  # Saddle brown
-        "text": "#2F4F4F",  # Dark slate gray
+        "text": "#2F1810",  # Dark brown
     },
 }
 
@@ -454,16 +454,27 @@ def create_festive_html(
     # Generate key page
     if include_key:
         rows = []
-        # Group by film for vintage christmas
+        # Group items by sections based on game
         if game == "vintage_christmas_films":
-            films = [
+            sections = [
                 ("Santa Claus (1898)", 1, 2),
                 ("A Winter Straw Ride (1906)", 3, 8),
                 ("The Night Before Christmas (1905)", 9, 16),
                 ("A Trap for Santa Claus (1909)", 17, 30),
             ]
-            for film_name, start, end in films:
-                rows.append(f'<div class="key-section-header">{film_name}</div>')
+        elif game == "meet_me_in_st_louis":
+            sections = [
+                ("Summer 1903", 1, 8),
+                ("Autumn 1903", 9, 16),
+                ("Winter 1903", 17, 24),
+                ("Spring 1904", 25, 30),
+            ]
+        else:
+            sections = None
+
+        if sections:
+            for section_name, start, end in sections:
+                rows.append(f'<div class="key-section-header">{section_name}</div>')
                 for item in items:
                     if start <= item.order <= end:
                         rows.append(
@@ -563,6 +574,153 @@ def html_to_pdf(html_file: str, pdf_file: str) -> str:
         page.wait_for_function("document.fonts.ready")
         page.pdf(path=str(pdf_path), format="Letter", print_background=True)
         browser.close()
+
+    print(f"Generated PDF: {pdf_file}")
+    return str(pdf_path)
+
+
+def markdown_to_pdf(md_file: str, pdf_file: str, game: str = "meet_me_in_st_louis") -> str:
+    """Convert markdown file to PDF using Playwright.
+
+    Args:
+        md_file: Path to input markdown file.
+        pdf_file: Path for output PDF file.
+        game: Game name for styling.
+
+    Returns:
+        Path to generated PDF file.
+    """
+    import re
+
+    from playwright.sync_api import sync_playwright
+
+    colors = FESTIVE_COLORS.get(game, FESTIVE_COLORS["meet_me_in_st_louis"])
+    md_path = Path(md_file)
+    pdf_path = Path(pdf_file).absolute()
+
+    # Read markdown content
+    md_content = md_path.read_text(encoding="utf-8")
+
+    # Simple markdown to HTML conversion
+    html_content = md_content
+
+    # Convert headers
+    html_content = re.sub(r"^# (.+)$", r"<h1>\1</h1>", html_content, flags=re.MULTILINE)
+    html_content = re.sub(r"^## (.+)$", r"<h2>\1</h2>", html_content, flags=re.MULTILINE)
+    html_content = re.sub(r"^### (.+)$", r"<h3>\1</h3>", html_content, flags=re.MULTILINE)
+
+    # Convert bold and italic
+    html_content = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html_content)
+    html_content = re.sub(r"\*(.+?)\*", r"<em>\1</em>", html_content)
+
+    # Convert unordered lists
+    html_content = re.sub(r"^- (.+)$", r"<li>\1</li>", html_content, flags=re.MULTILINE)
+
+    # Wrap consecutive <li> elements in <ul>
+    html_content = re.sub(
+        r"(<li>.+?</li>\n)+",
+        lambda m: f"<ul>{m.group(0)}</ul>",
+        html_content,
+    )
+
+    # Convert paragraphs (lines not starting with < or empty)
+    lines = html_content.split("\n")
+    processed_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if stripped and not stripped.startswith("<") and not stripped.startswith("---"):
+            processed_lines.append(f"<p>{stripped}</p>")
+        elif stripped == "---":
+            processed_lines.append("<hr>")
+        else:
+            processed_lines.append(line)
+    html_content = "\n".join(processed_lines)
+
+    # Create full HTML document
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap"
+          rel="stylesheet">
+    <style>
+        @page {{
+            size: letter portrait;
+            margin: 0.75in;
+        }}
+        body {{
+            font-family: 'Mountains of Christmas', Georgia, serif;
+            background: {colors['bg']};
+            color: {colors['text']};
+            line-height: 1.6;
+            padding: 20px;
+        }}
+        h1 {{
+            font-family: 'Cinzel Decorative', serif;
+            color: {colors['primary']};
+            text-align: center;
+            border-bottom: 3px double {colors['secondary']};
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }}
+        h2 {{
+            color: {colors['primary']};
+            border-bottom: 1px solid {colors['secondary']};
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }}
+        h3 {{
+            color: {colors['secondary']};
+            margin-top: 20px;
+        }}
+        p {{
+            margin: 10px 0;
+            text-align: justify;
+        }}
+        ul {{
+            margin: 10px 0;
+            padding-left: 25px;
+        }}
+        li {{
+            margin: 5px 0;
+        }}
+        strong {{
+            color: {colors['primary']};
+        }}
+        hr {{
+            border: none;
+            border-top: 2px dashed {colors['secondary']};
+            margin: 30px 0;
+        }}
+        em {{
+            font-style: italic;
+        }}
+    </style>
+</head>
+<body>
+{html_content}
+</body>
+</html>"""
+
+    # Write temporary HTML file
+    temp_html = pdf_path.with_suffix(".temp.html")
+    temp_html.write_text(html, encoding="utf-8")
+
+    # Convert to PDF
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page()
+        page.goto(f"file://{temp_html.absolute()}", wait_until="networkidle")
+        page.wait_for_function("document.fonts.ready")
+        page.pdf(path=str(pdf_path), format="Letter", print_background=True)
+        browser.close()
+
+    # Clean up temp file
+    temp_html.unlink()
 
     print(f"Generated PDF: {pdf_file}")
     return str(pdf_path)
