@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bingo Cards - Vintage Christmas Films</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap"
+          rel="stylesheet">
+    <style>
+        @page {
+            size: letter portrait;
+            margin: 0.5in;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Mountains of Christmas', cursive;
+            background: #FFF8DC;
+            margin: 0;
+            padding: 20px;
+            color: #2F4F4F;
+        }
+
+        .card-page {
+            page-break-after: always;
+            width: 7.5in;
+            height: 10in;
+            margin: 0 auto 20px;
+            padding: 0.3in;
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFFFFF 50%, #FFF8DC 100%);
+            border: 8px double #8B4513;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Decorative corners - aligned with yellow border at 25px */
+        .corner {
+            position: absolute;
+            font-size: 32px;
+            opacity: 0.6;
+            line-height: 1;
+        }
+        .corner-tl { top: 25px; left: 25px; transform: translate(-50%, -50%); }
+        .corner-tr { top: 25px; right: 25px; transform: translate(50%, -50%); }
+        .corner-bl { bottom: 25px; left: 25px; transform: translate(-50%, 50%); }
+        .corner-br { bottom: 25px; right: 25px; transform: translate(50%, 50%); }
+
+        .title {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .title h1 {
+            font-family: 'Cinzel Decorative', 'Mountains of Christmas', serif;
+            font-size: 28px;
+            color: #8B0000;
+            margin: 0 0 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .title h2 {
+            font-family: 'Mountains of Christmas', cursive;
+            font-size: 20px;
+            color: #228B22;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #2F4F4F;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .bingo-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            max-width: 500px;
+            margin: 0 auto;
+            background: #8B4513;
+            padding: 4px;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .bingo-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+            border-radius: 5px;
+            font-size: 32px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            padding: 5px;
+        }
+
+        .bingo-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Alternating cell colors for visual interest */
+        .bingo-cell:nth-child(odd) {
+            background: linear-gradient(180deg, #FFFFFF 0%, #FFF8F0 100%);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            color: #2F4F4F;
+            opacity: 0.7;
+        }
+
+        .decorative-border {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            right: 25px;
+            bottom: 25px;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* Key/Cheat sheet styles */
+        .key-page {
+            page-break-after: always;
+            width: 7.5in;
+            height: 10in;
+            margin: 0 auto 20px;
+            padding: 0.35in;
+            background: linear-gradient(135deg, #FFF8DC 0%, #FFFFFF 50%, #FFF8DC 100%);
+            border: 8px double #8B4513;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .key-page .title {
+            margin-bottom: 8px;
+        }
+
+        .key-page .title h1 {
+            font-size: 24px;
+            margin-bottom: 2px;
+        }
+
+        .key-page .title h2 {
+            font-size: 16px;
+        }
+
+        .key-page .subtitle {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .key-page .footer {
+            margin-top: 10px;
+            font-size: 10px;
+        }
+
+        .key-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-family: 'Mountains of Christmas', cursive;
+        }
+
+        .key-table th {
+            background: linear-gradient(180deg, #8B0000 0%, #228B22 100%);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            border: 2px solid #8B4513;
+        }
+
+        .key-table td {
+            padding: 8px 10px;
+            border: 1px solid #8B4513;
+            font-size: 12px;
+        }
+
+        .key-table tr:nth-child(even) {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .key-table tr:nth-child(odd) {
+            background: rgba(245,245,220,0.3);
+        }
+
+        .key-table .emoji-cell {
+            font-size: 20px;
+            text-align: center;
+            width: 60px;
+        }
+
+        .key-table .film-header {
+            background: #228B22;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Compact 2-column key grid */
+        .key-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 16px;
+            margin-top: 10px;
+            font-family: 'Mountains of Christmas', cursive;
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 0;
+            border-bottom: 1px dotted #8B4513;
+            font-size: 10px;
+        }
+
+        .key-item .emoji {
+            font-size: 14px;
+            min-width: 22px;
+            text-align: center;
+        }
+
+        .key-item .desc {
+            flex: 1;
+            line-height: 1.15;
+        }
+
+        .key-section-header {
+            grid-column: 1 / -1;
+            background: linear-gradient(90deg, #228B22, #8B0000);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 4px;
+            margin-top: 6px;
+            text-align: center;
+            font-family: 'Mountains of Christmas', cursive;
+        }
+
+        .key-section-header:first-child {
+            margin-top: 0;
+        }
+
+        .snowflakes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0.15;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: #FFD700;
+            font-size: 20px;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .card-page, .key-page {
+                box-shadow: none;
+                margin: 0;
+                border-width: 4px;
+            }
+            .bingo-cell:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:12%;top:51%;font-size:25px">&#10053;</span><span class="snowflake" style="left:54%;top:92%;font-size:24px">&#42;</span><span class="snowflake" style="left:42%;top:63%;font-size:23px">&#10052;</span><span class="snowflake" style="left:63%;top:53%;font-size:23px">&#10052;</span><span class="snowflake" style="left:52%;top:25%;font-size:16px">&#10052;</span><span class="snowflake" style="left:46%;top:50%;font-size:19px">&#10052;</span><span class="snowflake" style="left:5%;top:78%;font-size:17px">&#42;</span><span class="snowflake" style="left:12%;top:63%;font-size:15px">&#10054;</span><span class="snowflake" style="left:76%;top:88%;font-size:20px">&#42;</span><span class="snowflake" style="left:41%;top:92%;font-size:26px">&#10052;</span><span class="snowflake" style="left:43%;top:89%;font-size:29px">&#10054;</span><span class="snowflake" style="left:12%;top:46%;font-size:22px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:75%;top:24%;font-size:24px">&#10052;</span><span class="snowflake" style="left:38%;top:24%;font-size:24px">&#42;</span><span class="snowflake" style="left:13%;top:15%;font-size:27px">&#10052;</span><span class="snowflake" style="left:64%;top:85%;font-size:23px">&#10054;</span><span class="snowflake" style="left:29%;top:28%;font-size:20px">&#10052;</span><span class="snowflake" style="left:45%;top:84%;font-size:27px">&#42;</span><span class="snowflake" style="left:71%;top:11%;font-size:16px">&#10052;</span><span class="snowflake" style="left:23%;top:20%;font-size:19px">&#10052;</span><span class="snowflake" style="left:5%;top:75%;font-size:28px">&#10052;</span><span class="snowflake" style="left:79%;top:9%;font-size:21px">&#10054;</span><span class="snowflake" style="left:34%;top:73%;font-size:29px">&#42;</span><span class="snowflake" style="left:73%;top:46%;font-size:26px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰📜</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:58%;top:60%;font-size:15px">&#42;</span><span class="snowflake" style="left:81%;top:51%;font-size:24px">&#42;</span><span class="snowflake" style="left:22%;top:26%;font-size:18px">&#10052;</span><span class="snowflake" style="left:78%;top:69%;font-size:26px">&#10053;</span><span class="snowflake" style="left:64%;top:77%;font-size:18px">&#10052;</span><span class="snowflake" style="left:23%;top:42%;font-size:21px">&#42;</span><span class="snowflake" style="left:82%;top:19%;font-size:28px">&#10052;</span><span class="snowflake" style="left:77%;top:84%;font-size:22px">&#10054;</span><span class="snowflake" style="left:35%;top:89%;font-size:17px">&#42;</span><span class="snowflake" style="left:45%;top:84%;font-size:15px">&#10054;</span><span class="snowflake" style="left:61%;top:65%;font-size:19px">&#10054;</span><span class="snowflake" style="left:72%;top:5%;font-size:25px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🏠</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:67%;top:83%;font-size:28px">&#10054;</span><span class="snowflake" style="left:14%;top:84%;font-size:16px">&#10053;</span><span class="snowflake" style="left:84%;top:16%;font-size:24px">&#10053;</span><span class="snowflake" style="left:65%;top:13%;font-size:30px">&#42;</span><span class="snowflake" style="left:80%;top:21%;font-size:18px">&#10054;</span><span class="snowflake" style="left:78%;top:25%;font-size:15px">&#10053;</span><span class="snowflake" style="left:18%;top:84%;font-size:20px">&#10053;</span><span class="snowflake" style="left:75%;top:80%;font-size:26px">&#10052;</span><span class="snowflake" style="left:30%;top:18%;font-size:15px">&#10053;</span><span class="snowflake" style="left:64%;top:35%;font-size:25px">&#42;</span><span class="snowflake" style="left:13%;top:16%;font-size:22px">&#42;</span><span class="snowflake" style="left:5%;top:42%;font-size:16px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🤝</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:78%;top:61%;font-size:23px">&#10052;</span><span class="snowflake" style="left:77%;top:46%;font-size:28px">&#10053;</span><span class="snowflake" style="left:66%;top:82%;font-size:28px">&#10052;</span><span class="snowflake" style="left:58%;top:82%;font-size:28px">&#10052;</span><span class="snowflake" style="left:84%;top:66%;font-size:27px">&#10053;</span><span class="snowflake" style="left:24%;top:42%;font-size:25px">&#10054;</span><span class="snowflake" style="left:76%;top:61%;font-size:18px">&#10052;</span><span class="snowflake" style="left:10%;top:27%;font-size:16px">&#42;</span><span class="snowflake" style="left:12%;top:83%;font-size:21px">&#42;</span><span class="snowflake" style="left:48%;top:83%;font-size:21px">&#10053;</span><span class="snowflake" style="left:60%;top:58%;font-size:24px">&#10054;</span><span class="snowflake" style="left:90%;top:94%;font-size:15px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🌙🏔️</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:65%;top:89%;font-size:25px">&#42;</span><span class="snowflake" style="left:21%;top:7%;font-size:29px">&#10053;</span><span class="snowflake" style="left:18%;top:84%;font-size:22px">&#10054;</span><span class="snowflake" style="left:83%;top:33%;font-size:29px">&#10053;</span><span class="snowflake" style="left:44%;top:20%;font-size:25px">&#10052;</span><span class="snowflake" style="left:63%;top:73%;font-size:16px">&#10053;</span><span class="snowflake" style="left:64%;top:48%;font-size:18px">&#42;</span><span class="snowflake" style="left:86%;top:5%;font-size:18px">&#10052;</span><span class="snowflake" style="left:56%;top:28%;font-size:16px">&#10052;</span><span class="snowflake" style="left:63%;top:6%;font-size:17px">&#10052;</span><span class="snowflake" style="left:65%;top:63%;font-size:15px">&#42;</span><span class="snowflake" style="left:74%;top:94%;font-size:28px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷💥</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:94%;top:61%;font-size:28px">&#10054;</span><span class="snowflake" style="left:77%;top:76%;font-size:21px">&#10053;</span><span class="snowflake" style="left:81%;top:34%;font-size:26px">&#10052;</span><span class="snowflake" style="left:48%;top:42%;font-size:16px">&#10053;</span><span class="snowflake" style="left:15%;top:41%;font-size:23px">&#10052;</span><span class="snowflake" style="left:32%;top:70%;font-size:20px">&#42;</span><span class="snowflake" style="left:66%;top:81%;font-size:29px">&#10053;</span><span class="snowflake" style="left:67%;top:49%;font-size:23px">&#42;</span><span class="snowflake" style="left:81%;top:56%;font-size:23px">&#10052;</span><span class="snowflake" style="left:59%;top:6%;font-size:28px">&#10054;</span><span class="snowflake" style="left:93%;top:58%;font-size:25px">&#10054;</span><span class="snowflake" style="left:80%;top:5%;font-size:17px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🌙👧</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:87%;top:68%;font-size:18px">&#10054;</span><span class="snowflake" style="left:70%;top:18%;font-size:20px">&#10054;</span><span class="snowflake" style="left:62%;top:79%;font-size:21px">&#10052;</span><span class="snowflake" style="left:51%;top:20%;font-size:19px">&#42;</span><span class="snowflake" style="left:55%;top:37%;font-size:16px">&#10052;</span><span class="snowflake" style="left:18%;top:49%;font-size:28px">&#42;</span><span class="snowflake" style="left:42%;top:72%;font-size:18px">&#10053;</span><span class="snowflake" style="left:89%;top:57%;font-size:27px">&#10052;</span><span class="snowflake" style="left:32%;top:69%;font-size:16px">&#42;</span><span class="snowflake" style="left:44%;top:73%;font-size:26px">&#42;</span><span class="snowflake" style="left:21%;top:40%;font-size:20px">&#10053;</span><span class="snowflake" style="left:93%;top:21%;font-size:25px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰😢</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:58%;top:6%;font-size:17px">&#10054;</span><span class="snowflake" style="left:64%;top:50%;font-size:19px">&#10053;</span><span class="snowflake" style="left:22%;top:66%;font-size:19px">&#10054;</span><span class="snowflake" style="left:47%;top:29%;font-size:24px">&#10052;</span><span class="snowflake" style="left:6%;top:15%;font-size:19px">&#10052;</span><span class="snowflake" style="left:88%;top:85%;font-size:29px">&#10054;</span><span class="snowflake" style="left:22%;top:35%;font-size:30px">&#42;</span><span class="snowflake" style="left:73%;top:52%;font-size:15px">&#10054;</span><span class="snowflake" style="left:46%;top:90%;font-size:26px">&#10054;</span><span class="snowflake" style="left:31%;top:41%;font-size:16px">&#42;</span><span class="snowflake" style="left:84%;top:78%;font-size:26px">&#10052;</span><span class="snowflake" style="left:42%;top:9%;font-size:22px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰👋</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:38%;top:11%;font-size:26px">&#42;</span><span class="snowflake" style="left:78%;top:26%;font-size:22px">&#10052;</span><span class="snowflake" style="left:93%;top:78%;font-size:30px">&#42;</span><span class="snowflake" style="left:93%;top:41%;font-size:26px">&#10054;</span><span class="snowflake" style="left:11%;top:18%;font-size:26px">&#10054;</span><span class="snowflake" style="left:6%;top:14%;font-size:24px">&#10054;</span><span class="snowflake" style="left:55%;top:75%;font-size:18px">&#10054;</span><span class="snowflake" style="left:6%;top:45%;font-size:19px">&#42;</span><span class="snowflake" style="left:22%;top:44%;font-size:19px">&#10053;</span><span class="snowflake" style="left:25%;top:8%;font-size:20px">&#10053;</span><span class="snowflake" style="left:36%;top:80%;font-size:22px">&#10053;</span><span class="snowflake" style="left:22%;top:85%;font-size:28px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🛷💥</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:62%;top:30%;font-size:22px">&#10053;</span><span class="snowflake" style="left:45%;top:5%;font-size:16px">&#10053;</span><span class="snowflake" style="left:54%;top:65%;font-size:19px">&#10053;</span><span class="snowflake" style="left:47%;top:13%;font-size:29px">&#10054;</span><span class="snowflake" style="left:46%;top:36%;font-size:27px">&#10053;</span><span class="snowflake" style="left:91%;top:90%;font-size:21px">&#10054;</span><span class="snowflake" style="left:8%;top:48%;font-size:25px">&#10053;</span><span class="snowflake" style="left:58%;top:27%;font-size:23px">&#42;</span><span class="snowflake" style="left:11%;top:76%;font-size:18px">&#42;</span><span class="snowflake" style="left:7%;top:44%;font-size:17px">&#10054;</span><span class="snowflake" style="left:51%;top:17%;font-size:26px">&#10052;</span><span class="snowflake" style="left:29%;top:59%;font-size:26px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙📦</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:47%;top:95%;font-size:15px">&#10054;</span><span class="snowflake" style="left:58%;top:20%;font-size:27px">&#42;</span><span class="snowflake" style="left:57%;top:91%;font-size:20px">&#10054;</span><span class="snowflake" style="left:79%;top:55%;font-size:24px">&#10053;</span><span class="snowflake" style="left:83%;top:15%;font-size:16px">&#10054;</span><span class="snowflake" style="left:89%;top:81%;font-size:30px">&#10053;</span><span class="snowflake" style="left:18%;top:9%;font-size:20px">&#10052;</span><span class="snowflake" style="left:17%;top:71%;font-size:18px">&#10052;</span><span class="snowflake" style="left:64%;top:57%;font-size:27px">&#10053;</span><span class="snowflake" style="left:5%;top:60%;font-size:20px">&#42;</span><span class="snowflake" style="left:80%;top:40%;font-size:28px">&#42;</span><span class="snowflake" style="left:20%;top:59%;font-size:24px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🛷🛷</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:61%;top:89%;font-size:15px">&#42;</span><span class="snowflake" style="left:82%;top:65%;font-size:18px">&#10053;</span><span class="snowflake" style="left:33%;top:91%;font-size:29px">&#42;</span><span class="snowflake" style="left:12%;top:11%;font-size:26px">&#10053;</span><span class="snowflake" style="left:53%;top:15%;font-size:19px">&#10053;</span><span class="snowflake" style="left:7%;top:29%;font-size:21px">&#10054;</span><span class="snowflake" style="left:83%;top:50%;font-size:20px">&#10054;</span><span class="snowflake" style="left:37%;top:88%;font-size:18px">&#42;</span><span class="snowflake" style="left:69%;top:81%;font-size:30px">&#10054;</span><span class="snowflake" style="left:63%;top:77%;font-size:18px">&#10052;</span><span class="snowflake" style="left:78%;top:63%;font-size:25px">&#10054;</span><span class="snowflake" style="left:40%;top:46%;font-size:30px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰👋</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:15%;top:92%;font-size:19px">&#10052;</span><span class="snowflake" style="left:50%;top:32%;font-size:15px">&#10053;</span><span class="snowflake" style="left:65%;top:89%;font-size:28px">&#42;</span><span class="snowflake" style="left:77%;top:93%;font-size:29px">&#10053;</span><span class="snowflake" style="left:92%;top:88%;font-size:30px">&#42;</span><span class="snowflake" style="left:73%;top:35%;font-size:29px">&#42;</span><span class="snowflake" style="left:55%;top:27%;font-size:27px">&#42;</span><span class="snowflake" style="left:88%;top:55%;font-size:26px">&#10053;</span><span class="snowflake" style="left:71%;top:25%;font-size:22px">&#10052;</span><span class="snowflake" style="left:76%;top:79%;font-size:23px">&#10054;</span><span class="snowflake" style="left:91%;top:21%;font-size:16px">&#42;</span><span class="snowflake" style="left:17%;top:27%;font-size:28px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙🦌</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:81%;top:69%;font-size:30px">&#10052;</span><span class="snowflake" style="left:80%;top:51%;font-size:20px">&#10052;</span><span class="snowflake" style="left:92%;top:83%;font-size:29px">&#42;</span><span class="snowflake" style="left:48%;top:18%;font-size:24px">&#10054;</span><span class="snowflake" style="left:42%;top:53%;font-size:28px">&#10052;</span><span class="snowflake" style="left:60%;top:65%;font-size:24px">&#10052;</span><span class="snowflake" style="left:48%;top:81%;font-size:17px">&#10052;</span><span class="snowflake" style="left:93%;top:43%;font-size:15px">&#10052;</span><span class="snowflake" style="left:54%;top:21%;font-size:26px">&#42;</span><span class="snowflake" style="left:42%;top:59%;font-size:20px">&#42;</span><span class="snowflake" style="left:82%;top:63%;font-size:23px">&#10052;</span><span class="snowflake" style="left:58%;top:73%;font-size:16px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🌙📦</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:27%;top:53%;font-size:19px">&#10053;</span><span class="snowflake" style="left:13%;top:44%;font-size:30px">&#10052;</span><span class="snowflake" style="left:52%;top:77%;font-size:26px">&#10053;</span><span class="snowflake" style="left:32%;top:62%;font-size:27px">&#10054;</span><span class="snowflake" style="left:71%;top:6%;font-size:24px">&#10053;</span><span class="snowflake" style="left:95%;top:58%;font-size:18px">&#10052;</span><span class="snowflake" style="left:92%;top:34%;font-size:15px">&#10052;</span><span class="snowflake" style="left:11%;top:84%;font-size:23px">&#42;</span><span class="snowflake" style="left:23%;top:95%;font-size:25px">&#10052;</span><span class="snowflake" style="left:94%;top:38%;font-size:26px">&#10052;</span><span class="snowflake" style="left:38%;top:43%;font-size:27px">&#10054;</span><span class="snowflake" style="left:38%;top:12%;font-size:18px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🦌</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:25%;top:73%;font-size:21px">&#42;</span><span class="snowflake" style="left:43%;top:24%;font-size:28px">&#10054;</span><span class="snowflake" style="left:94%;top:64%;font-size:22px">&#10053;</span><span class="snowflake" style="left:31%;top:49%;font-size:19px">&#42;</span><span class="snowflake" style="left:51%;top:86%;font-size:29px">&#10054;</span><span class="snowflake" style="left:38%;top:62%;font-size:29px">&#42;</span><span class="snowflake" style="left:58%;top:51%;font-size:24px">&#42;</span><span class="snowflake" style="left:12%;top:61%;font-size:27px">&#42;</span><span class="snowflake" style="left:88%;top:75%;font-size:15px">&#10054;</span><span class="snowflake" style="left:90%;top:92%;font-size:26px">&#10053;</span><span class="snowflake" style="left:41%;top:54%;font-size:27px">&#10054;</span><span class="snowflake" style="left:28%;top:29%;font-size:26px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰📜</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:21%;top:89%;font-size:24px">&#10054;</span><span class="snowflake" style="left:43%;top:58%;font-size:24px">&#10053;</span><span class="snowflake" style="left:17%;top:17%;font-size:30px">&#10052;</span><span class="snowflake" style="left:15%;top:29%;font-size:15px">&#10052;</span><span class="snowflake" style="left:70%;top:24%;font-size:17px">&#10053;</span><span class="snowflake" style="left:70%;top:51%;font-size:22px">&#10054;</span><span class="snowflake" style="left:38%;top:68%;font-size:16px">&#10052;</span><span class="snowflake" style="left:49%;top:26%;font-size:20px">&#10053;</span><span class="snowflake" style="left:42%;top:70%;font-size:16px">&#10053;</span><span class="snowflake" style="left:86%;top:32%;font-size:27px">&#42;</span><span class="snowflake" style="left:76%;top:56%;font-size:27px">&#10054;</span><span class="snowflake" style="left:26%;top:70%;font-size:19px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷💥</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:7%;top:5%;font-size:15px">&#42;</span><span class="snowflake" style="left:46%;top:35%;font-size:23px">&#10052;</span><span class="snowflake" style="left:27%;top:71%;font-size:18px">&#10054;</span><span class="snowflake" style="left:56%;top:76%;font-size:22px">&#10052;</span><span class="snowflake" style="left:60%;top:13%;font-size:26px">&#10053;</span><span class="snowflake" style="left:32%;top:54%;font-size:25px">&#42;</span><span class="snowflake" style="left:88%;top:47%;font-size:21px">&#10054;</span><span class="snowflake" style="left:67%;top:40%;font-size:28px">&#10053;</span><span class="snowflake" style="left:54%;top:12%;font-size:23px">&#10054;</span><span class="snowflake" style="left:8%;top:59%;font-size:25px">&#42;</span><span class="snowflake" style="left:27%;top:69%;font-size:25px">&#10053;</span><span class="snowflake" style="left:8%;top:93%;font-size:25px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🙏</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:5%;top:78%;font-size:30px">&#42;</span><span class="snowflake" style="left:22%;top:51%;font-size:18px">&#42;</span><span class="snowflake" style="left:44%;top:84%;font-size:19px">&#42;</span><span class="snowflake" style="left:72%;top:48%;font-size:29px">&#10054;</span><span class="snowflake" style="left:52%;top:54%;font-size:25px">&#10052;</span><span class="snowflake" style="left:19%;top:61%;font-size:19px">&#42;</span><span class="snowflake" style="left:55%;top:45%;font-size:27px">&#10052;</span><span class="snowflake" style="left:85%;top:71%;font-size:26px">&#10054;</span><span class="snowflake" style="left:10%;top:80%;font-size:22px">&#42;</span><span class="snowflake" style="left:46%;top:65%;font-size:26px">&#42;</span><span class="snowflake" style="left:68%;top:49%;font-size:15px">&#10052;</span><span class="snowflake" style="left:92%;top:41%;font-size:27px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰👋</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:47%;top:73%;font-size:28px">&#10054;</span><span class="snowflake" style="left:87%;top:19%;font-size:16px">&#10054;</span><span class="snowflake" style="left:79%;top:24%;font-size:17px">&#10052;</span><span class="snowflake" style="left:32%;top:52%;font-size:17px">&#42;</span><span class="snowflake" style="left:79%;top:65%;font-size:28px">&#10054;</span><span class="snowflake" style="left:63%;top:40%;font-size:20px">&#42;</span><span class="snowflake" style="left:29%;top:43%;font-size:26px">&#10054;</span><span class="snowflake" style="left:78%;top:20%;font-size:23px">&#10052;</span><span class="snowflake" style="left:81%;top:89%;font-size:29px">&#10053;</span><span class="snowflake" style="left:62%;top:25%;font-size:25px">&#42;</span><span class="snowflake" style="left:54%;top:91%;font-size:30px">&#42;</span><span class="snowflake" style="left:38%;top:50%;font-size:21px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🙏</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:60%;top:68%;font-size:16px">&#10052;</span><span class="snowflake" style="left:17%;top:33%;font-size:19px">&#42;</span><span class="snowflake" style="left:92%;top:28%;font-size:23px">&#42;</span><span class="snowflake" style="left:40%;top:28%;font-size:15px">&#10053;</span><span class="snowflake" style="left:72%;top:56%;font-size:22px">&#10053;</span><span class="snowflake" style="left:63%;top:84%;font-size:19px">&#10053;</span><span class="snowflake" style="left:89%;top:73%;font-size:19px">&#10053;</span><span class="snowflake" style="left:55%;top:88%;font-size:27px">&#10054;</span><span class="snowflake" style="left:51%;top:86%;font-size:25px">&#10052;</span><span class="snowflake" style="left:30%;top:19%;font-size:16px">&#10054;</span><span class="snowflake" style="left:87%;top:53%;font-size:19px">&#42;</span><span class="snowflake" style="left:71%;top:44%;font-size:16px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🌙📦</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:16%;top:22%;font-size:21px">&#10053;</span><span class="snowflake" style="left:38%;top:51%;font-size:23px">&#10053;</span><span class="snowflake" style="left:20%;top:23%;font-size:27px">&#42;</span><span class="snowflake" style="left:8%;top:19%;font-size:21px">&#42;</span><span class="snowflake" style="left:11%;top:28%;font-size:22px">&#10052;</span><span class="snowflake" style="left:57%;top:72%;font-size:23px">&#10054;</span><span class="snowflake" style="left:26%;top:5%;font-size:30px">&#10054;</span><span class="snowflake" style="left:67%;top:28%;font-size:20px">&#42;</span><span class="snowflake" style="left:30%;top:88%;font-size:20px">&#10054;</span><span class="snowflake" style="left:16%;top:32%;font-size:20px">&#10052;</span><span class="snowflake" style="left:89%;top:83%;font-size:20px">&#10052;</span><span class="snowflake" style="left:45%;top:63%;font-size:18px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🎅🛏️</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:55%;top:75%;font-size:25px">&#10054;</span><span class="snowflake" style="left:22%;top:5%;font-size:27px">&#10054;</span><span class="snowflake" style="left:67%;top:75%;font-size:24px">&#10054;</span><span class="snowflake" style="left:28%;top:93%;font-size:27px">&#10052;</span><span class="snowflake" style="left:58%;top:93%;font-size:25px">&#10052;</span><span class="snowflake" style="left:33%;top:25%;font-size:25px">&#10053;</span><span class="snowflake" style="left:22%;top:15%;font-size:19px">&#42;</span><span class="snowflake" style="left:23%;top:39%;font-size:19px">&#42;</span><span class="snowflake" style="left:16%;top:73%;font-size:15px">&#10054;</span><span class="snowflake" style="left:49%;top:88%;font-size:20px">&#10054;</span><span class="snowflake" style="left:32%;top:50%;font-size:16px">&#10054;</span><span class="snowflake" style="left:22%;top:13%;font-size:30px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🎅🛏️</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:26%;top:56%;font-size:19px">&#10052;</span><span class="snowflake" style="left:78%;top:10%;font-size:28px">&#42;</span><span class="snowflake" style="left:35%;top:52%;font-size:21px">&#42;</span><span class="snowflake" style="left:86%;top:34%;font-size:30px">&#42;</span><span class="snowflake" style="left:72%;top:30%;font-size:25px">&#10053;</span><span class="snowflake" style="left:26%;top:63%;font-size:17px">&#10053;</span><span class="snowflake" style="left:17%;top:94%;font-size:25px">&#10054;</span><span class="snowflake" style="left:67%;top:23%;font-size:18px">&#42;</span><span class="snowflake" style="left:69%;top:88%;font-size:18px">&#10053;</span><span class="snowflake" style="left:27%;top:45%;font-size:21px">&#42;</span><span class="snowflake" style="left:50%;top:63%;font-size:18px">&#10054;</span><span class="snowflake" style="left:59%;top:63%;font-size:17px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🌙🏠</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:25%;top:94%;font-size:23px">&#10053;</span><span class="snowflake" style="left:94%;top:67%;font-size:22px">&#10052;</span><span class="snowflake" style="left:25%;top:56%;font-size:19px">&#10054;</span><span class="snowflake" style="left:41%;top:38%;font-size:24px">&#10052;</span><span class="snowflake" style="left:79%;top:35%;font-size:19px">&#10054;</span><span class="snowflake" style="left:25%;top:45%;font-size:22px">&#42;</span><span class="snowflake" style="left:42%;top:11%;font-size:16px">&#10054;</span><span class="snowflake" style="left:18%;top:79%;font-size:23px">&#10053;</span><span class="snowflake" style="left:56%;top:89%;font-size:28px">&#10054;</span><span class="snowflake" style="left:68%;top:18%;font-size:27px">&#10053;</span><span class="snowflake" style="left:27%;top:33%;font-size:20px">&#10053;</span><span class="snowflake" style="left:59%;top:23%;font-size:19px">&#10053;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🦌</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:73%;top:64%;font-size:29px">&#10054;</span><span class="snowflake" style="left:69%;top:24%;font-size:28px">&#42;</span><span class="snowflake" style="left:40%;top:51%;font-size:16px">&#10054;</span><span class="snowflake" style="left:65%;top:95%;font-size:29px">&#10053;</span><span class="snowflake" style="left:29%;top:62%;font-size:16px">&#10052;</span><span class="snowflake" style="left:70%;top:46%;font-size:15px">&#10052;</span><span class="snowflake" style="left:66%;top:59%;font-size:30px">&#42;</span><span class="snowflake" style="left:50%;top:71%;font-size:24px">&#10052;</span><span class="snowflake" style="left:27%;top:41%;font-size:19px">&#10053;</span><span class="snowflake" style="left:74%;top:51%;font-size:25px">&#10052;</span><span class="snowflake" style="left:70%;top:9%;font-size:27px">&#42;</span><span class="snowflake" style="left:58%;top:77%;font-size:18px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙👧</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:25%;top:13%;font-size:17px">&#10054;</span><span class="snowflake" style="left:71%;top:23%;font-size:29px">&#42;</span><span class="snowflake" style="left:87%;top:76%;font-size:25px">&#10053;</span><span class="snowflake" style="left:94%;top:77%;font-size:21px">&#42;</span><span class="snowflake" style="left:83%;top:47%;font-size:15px">&#10053;</span><span class="snowflake" style="left:11%;top:28%;font-size:18px">&#10052;</span><span class="snowflake" style="left:23%;top:46%;font-size:18px">&#10053;</span><span class="snowflake" style="left:89%;top:65%;font-size:15px">&#10052;</span><span class="snowflake" style="left:64%;top:39%;font-size:21px">&#10054;</span><span class="snowflake" style="left:76%;top:42%;font-size:30px">&#10052;</span><span class="snowflake" style="left:76%;top:30%;font-size:26px">&#10054;</span><span class="snowflake" style="left:72%;top:9%;font-size:21px">&#42;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">💰🙏</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:49%;top:54%;font-size:27px">&#10052;</span><span class="snowflake" style="left:54%;top:82%;font-size:22px">&#10052;</span><span class="snowflake" style="left:49%;top:76%;font-size:24px">&#10052;</span><span class="snowflake" style="left:49%;top:90%;font-size:28px">&#42;</span><span class="snowflake" style="left:36%;top:29%;font-size:21px">&#42;</span><span class="snowflake" style="left:91%;top:55%;font-size:25px">&#42;</span><span class="snowflake" style="left:22%;top:77%;font-size:18px">&#10052;</span><span class="snowflake" style="left:25%;top:85%;font-size:26px">&#10054;</span><span class="snowflake" style="left:51%;top:40%;font-size:17px">&#10053;</span><span class="snowflake" style="left:22%;top:67%;font-size:25px">&#10053;</span><span class="snowflake" style="left:73%;top:13%;font-size:30px">&#10054;</span><span class="snowflake" style="left:14%;top:70%;font-size:27px">&#10054;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🌙🏔️</div>
+        <div class="bingo-cell">💰😱</div>
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🍺</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷🐎</div>
+        <div class="bingo-cell">💰🤝</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰📜</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🛷⛪</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="card-page">
+    <div class="decorative-border"></div>
+    <div class="snowflakes"><span class="snowflake" style="left:76%;top:62%;font-size:19px">&#42;</span><span class="snowflake" style="left:24%;top:60%;font-size:15px">&#10054;</span><span class="snowflake" style="left:49%;top:66%;font-size:15px">&#42;</span><span class="snowflake" style="left:19%;top:11%;font-size:23px">&#10053;</span><span class="snowflake" style="left:64%;top:15%;font-size:15px">&#10053;</span><span class="snowflake" style="left:9%;top:9%;font-size:30px">&#10052;</span><span class="snowflake" style="left:92%;top:44%;font-size:23px">&#42;</span><span class="snowflake" style="left:42%;top:54%;font-size:25px">&#10054;</span><span class="snowflake" style="left:56%;top:15%;font-size:29px">&#42;</span><span class="snowflake" style="left:31%;top:85%;font-size:16px">&#10053;</span><span class="snowflake" style="left:58%;top:81%;font-size:20px">&#10052;</span><span class="snowflake" style="left:62%;top:16%;font-size:18px">&#10052;</span></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)</div>
+
+    <div class="bingo-grid">
+        <div class="bingo-cell">🌙🏠</div>
+        <div class="bingo-cell">🛷🛷</div>
+        <div class="bingo-cell">💰🥷</div>
+        <div class="bingo-cell">🎅🛏️</div>
+        <div class="bingo-cell">💰🪤</div>
+        <div class="bingo-cell">💰🙏</div>
+        <div class="bingo-cell">💰🛏️</div>
+        <div class="bingo-cell">🌙🦌</div>
+        <div class="bingo-cell">💰👋</div>
+        <div class="bingo-cell">🛷🏃‍♀️</div>
+        <div class="bingo-cell">🎅🧦</div>
+        <div class="bingo-cell">🛷⛄</div>
+        <div class="bingo-cell">🌙🎁</div>
+        <div class="bingo-cell">💰🏡</div>
+        <div class="bingo-cell">🌙👧</div>
+        <div class="bingo-cell">💰😢</div>
+        <div class="bingo-cell">💰🚚</div>
+        <div class="bingo-cell">🌙🔨</div>
+        <div class="bingo-cell">🛷💥</div>
+        <div class="bingo-cell">🛷⛪</div>
+        <div class="bingo-cell">🌙📦</div>
+        <div class="bingo-cell">💰🪟</div>
+        <div class="bingo-cell">💰⚡</div>
+        <div class="bingo-cell">🌙😴</div>
+        <div class="bingo-cell">💰🍺</div>
+    </div>
+
+    <div class="footer">
+        &#10052; Mark each event as you see it in the films! &#10052;
+    </div>
+</div>
+
+
+<div class="key-page">
+    <div class="decorative-border"></div>
+    <div class="corner corner-tl">&#10052;</div>
+    <div class="corner corner-tr">&#127876;</div>
+    <div class="corner corner-bl">&#127876;</div>
+    <div class="corner corner-br">&#10052;</div>
+
+    <div class="title">
+        <h1>&#127876; BINGO KEY &#127876;</h1>
+        <h2>Vintage Christmas Films</h2>
+    </div>
+    <div class="subtitle">Reference guide for all 30 events</div>
+
+    <div class="key-grid">
+        <div class="key-section-header">Santa Claus (1898)</div>
+        <div class="key-item"><span class="emoji">🎅🛏️</span><span class="desc">Maid puts children to bed</span></div>
+        <div class="key-item"><span class="emoji">🎅🧦</span><span class="desc">Santa fills stockings</span></div>
+        <div class="key-section-header">A Winter Straw Ride (1906)</div>
+        <div class="key-item"><span class="emoji">🛷🛷</span><span class="desc">Board straw carts</span></div>
+        <div class="key-item"><span class="emoji">🛷⛪</span><span class="desc">Leaving church</span></div>
+        <div class="key-item"><span class="emoji">🛷🐎</span><span class="desc">Ride begins</span></div>
+        <div class="key-item"><span class="emoji">🛷⛄</span><span class="desc">Snowball throwing</span></div>
+        <div class="key-item"><span class="emoji">🛷💥</span><span class="desc">Cart tips over</span></div>
+        <div class="key-item"><span class="emoji">🛷🏃‍♀️</span><span class="desc">Chase scene</span></div>
+        <div class="key-section-header">The Night Before Christmas (1905)</div>
+        <div class="key-item"><span class="emoji">🌙🦌</span><span class="desc">Santa feeds reindeer</span></div>
+        <div class="key-item"><span class="emoji">🌙🔨</span><span class="desc">Finishes making toys</span></div>
+        <div class="key-item"><span class="emoji">🌙👧</span><span class="desc">Children hang stockings</span></div>
+        <div class="key-item"><span class="emoji">🌙😴</span><span class="desc">Children sent to bed</span></div>
+        <div class="key-item"><span class="emoji">🌙📦</span><span class="desc">Santa loads sleigh</span></div>
+        <div class="key-item"><span class="emoji">🌙🏔️</span><span class="desc">Sleigh journey (diorama)</span></div>
+        <div class="key-item"><span class="emoji">🌙🏠</span><span class="desc">Santa on rooftop</span></div>
+        <div class="key-item"><span class="emoji">🌙🎁</span><span class="desc">Children discover presents</span></div>
+        <div class="key-section-header">A Trap for Santa Claus (1909)</div>
+        <div class="key-item"><span class="emoji">💰🍺</span><span class="desc">Father drinking at bar</span></div>
+        <div class="key-item"><span class="emoji">💰👋</span><span class="desc">Father abandons family</span></div>
+        <div class="key-item"><span class="emoji">💰📜</span><span class="desc">Attorney brings news of inheritance</span></div>
+        <div class="key-item"><span class="emoji">💰🏡</span><span class="desc">Wife inherits fortune</span></div>
+        <div class="key-item"><span class="emoji">💰🚚</span><span class="desc">Family moves to mansion</span></div>
+        <div class="key-item"><span class="emoji">💰🪟</span><span class="desc">No chimney in new house</span></div>
+        <div class="key-item"><span class="emoji">💰🙏</span><span class="desc">Children pray before bed</span></div>
+        <div class="key-item"><span class="emoji">💰🪤</span><span class="desc">Children set trap for Santa</span></div>
+        <div class="key-item"><span class="emoji">💰🛏️</span><span class="desc">Mother tucks children into bed</span></div>
+        <div class="key-item"><span class="emoji">💰😢</span><span class="desc">Mother's sadness (missing husband)</span></div>
+        <div class="key-item"><span class="emoji">💰🥷</span><span class="desc">Father appears as burglar</span></div>
+        <div class="key-item"><span class="emoji">💰⚡</span><span class="desc">Father caught in trap</span></div>
+        <div class="key-item"><span class="emoji">💰😱</span><span class="desc">Mother recognizes husband</span></div>
+        <div class="key-item"><span class="emoji">💰🤝</span><span class="desc">Family reconciliation</span></div>
+    </div>
+
+    <div class="footer">
+        &#10052; Happy Viewing! &#10052;
+    </div>
+</div>
+
+</body>
+</html>

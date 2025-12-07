@@ -47,45 +47,44 @@ MEET_ME_IN_ST_LOUIS = [
 ]
 
 
-# Vintage Christmas Films (1898-1908) bingo items
+# Vintage Christmas Films (1898-1909) bingo items
 # 4 silent films: Santa Claus (1898), A Winter Straw Ride (1906),
-# The Night Before Christmas (1905), The Christmas Burglars (1908)
-# Each film has a consistent first emoji as identifier
+# The Night Before Christmas (1905), A Trap for Santa Claus (1909)
 VINTAGE_CHRISTMAS_FILMS = [
-    # Santa Claus (1898) - George Albert Smith, UK - 8 events
-    BingoItem(1, "\U0001F385\U0001F3A5", "Santa Claus (1898) - Film begins"),
-    BingoItem(2, "\U0001F385\U0001F6CF", "Children sleeping in bed"),
-    BingoItem(3, "\U0001F385\U0001F319", "Santa appears magically"),
-    BingoItem(4, "\U0001F385\U0001F381", "Santa fills stockings"),
-    BingoItem(5, "\U0001F385\U0001F3E0", "Rooftop scene"),
-    BingoItem(6, "\U0001F385\U0001F4A8", "Santa vanishes"),
-    BingoItem(7, "\U0001F385\U0001F476", "Children wake up"),
-    BingoItem(8, "\U0001F385\U0001F389", "Children discover presents"),
-    # A Winter Straw Ride (1906) - American Mutoscope & Biograph - 7 events
-    BingoItem(9, "\U0001F3BF\U0001F6F7", "Sleigh ride begins"),
-    BingoItem(10, "\U0001F3BF\U0001F3D4", "Winter landscape"),
-    BingoItem(11, "\U0001F3BF\U0001F40E", "Horse-drawn sleigh"),
-    BingoItem(12, "\U0001F3BF\U00002744\uFE0F", "Snowfall scene"),
-    BingoItem(13, "\U0001F3BF\U0001F46B", "Couples riding together"),
-    BingoItem(14, "\U0001F3BF\U0001F3A4", "Singing/merriment"),
-    BingoItem(15, "\U0001F3BF\U0001F3E1", "Arrival at destination"),
-    # The Night Before Christmas (1905) - Edwin S. Porter - 8 events
-    BingoItem(16, "\U0001F384\U0001F319", "Night scene"),
-    BingoItem(17, "\U0001F384\U0001F9E6", "Children hanging stockings"),
-    BingoItem(18, "\U0001F384\U0001F6CF", "Children go to bed"),
-    BingoItem(19, "\U0001F384\U0001F385", "Santa comes down chimney"),
-    BingoItem(20, "\U0001F384\U0001F381", "Santa arranges gifts"),
-    BingoItem(21, "\U0001F384\U0001F36A", "Santa eats cookies"),
-    BingoItem(22, "\U0001F384\U0001F4A8", "Santa departs"),
-    BingoItem(23, "\U0001F384\U0001F389", "Morning excitement"),
-    # The Christmas Burglars (1908) - D.W. Griffith - 7 events
-    BingoItem(24, "\U0001F3E0\U0001F5DD", "House exterior"),
-    BingoItem(25, "\U0001F3E0\U0001F977", "Burglars appear"),
-    BingoItem(26, "\U0001F3E0\U0001F440", "Burglars sneak in"),
-    BingoItem(27, "\U0001F3E0\U0001F476", "Child discovers burglars"),
-    BingoItem(28, "\U0001F3E0\U0001F6A8", "Alarm raised"),
-    BingoItem(29, "\U0001F3E0\U0001F46E", "Burglars caught"),
-    BingoItem(30, "\U0001F3E0\U0001F384", "Happy Christmas ending"),
+    # Santa Claus (1898) - 2 events
+    BingoItem(1, "\U0001F385\U0001F6CF\uFE0F", "Maid puts children to bed"),
+    BingoItem(2, "\U0001F385\U0001F9E6", "Santa fills stockings"),
+    # A Winter Straw Ride (1906) - 6 events
+    BingoItem(3, "\U0001F6F7\U0001F6F7", "Board straw carts"),
+    BingoItem(4, "\U0001F6F7\u26EA", "Leaving church"),
+    BingoItem(5, "\U0001F6F7\U0001F40E", "Ride begins"),
+    BingoItem(6, "\U0001F6F7\u26C4", "Snowball throwing"),
+    BingoItem(7, "\U0001F6F7\U0001F4A5", "Cart tips over"),
+    BingoItem(8, "\U0001F6F7\U0001F3C3\u200D\u2640\uFE0F", "Chase scene"),
+    # The Night Before Christmas (1905) - 8 events
+    BingoItem(9, "\U0001F319\U0001F98C", "Santa feeds reindeer"),
+    BingoItem(10, "\U0001F319\U0001F528", "Finishes making toys"),
+    BingoItem(11, "\U0001F319\U0001F467", "Children hang stockings"),
+    BingoItem(12, "\U0001F319\U0001F634", "Children sent to bed"),
+    BingoItem(13, "\U0001F319\U0001F4E6", "Santa loads sleigh"),
+    BingoItem(14, "\U0001F319\U0001F3D4\uFE0F", "Sleigh journey (diorama)"),
+    BingoItem(15, "\U0001F319\U0001F3E0", "Santa on rooftop"),
+    BingoItem(16, "\U0001F319\U0001F381", "Children discover presents"),
+    # A Trap for Santa Claus (1909) - 14 events
+    BingoItem(17, "\U0001F4B0\U0001F37A", "Father drinking at bar"),
+    BingoItem(18, "\U0001F4B0\U0001F44B", "Father abandons family"),
+    BingoItem(19, "\U0001F4B0\U0001F4DC", "Attorney brings news of inheritance"),
+    BingoItem(20, "\U0001F4B0\U0001F3E1", "Wife inherits fortune"),
+    BingoItem(21, "\U0001F4B0\U0001F69A", "Family moves to mansion"),
+    BingoItem(22, "\U0001F4B0\U0001FA9F", "No chimney in new house"),
+    BingoItem(23, "\U0001F4B0\U0001F64F", "Children pray before bed"),
+    BingoItem(24, "\U0001F4B0\U0001FAA4", "Children set trap for Santa"),
+    BingoItem(25, "\U0001F4B0\U0001F6CF\uFE0F", "Mother tucks children into bed"),
+    BingoItem(26, "\U0001F4B0\U0001F622", "Mother's sadness (missing husband)"),
+    BingoItem(27, "\U0001F4B0\U0001F977", "Father appears as burglar"),
+    BingoItem(28, "\U0001F4B0\u26A1", "Father caught in trap"),
+    BingoItem(29, "\U0001F4B0\U0001F631", "Mother recognizes husband"),
+    BingoItem(30, "\U0001F4B0\U0001F91D", "Family reconciliation"),
 ]
 
 
