@@ -90,4 +90,4 @@ def test_get_game_data_vintage_christmas_films():
     items = get_game_data("vintage_christmas_films")
     assert len(items) == 30
     assert items[0].order == 1
-    assert items[0].description == "Santa Claus (1898) - Film begins"
+    assert items[0].description == "Maid puts children to bed"

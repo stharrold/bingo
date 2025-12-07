@@ -72,18 +72,17 @@ FESTIVE_HTML_TEMPLATE = '''<!DOCTYPE html>
             page-break-after: avoid;
         }}
 
-        /* Decorative corners */
+        /* Decorative corners - aligned with yellow border at 25px */
         .corner {{
             position: absolute;
-            width: 60px;
-            height: 60px;
-            font-size: 40px;
+            font-size: 32px;
             opacity: 0.6;
+            line-height: 1;
         }}
-        .corner-tl {{ top: 10px; left: 10px; }}
-        .corner-tr {{ top: 10px; right: 10px; }}
-        .corner-bl {{ bottom: 10px; left: 10px; }}
-        .corner-br {{ bottom: 10px; right: 10px; }}
+        .corner-tl {{ top: 25px; left: 25px; transform: translate(-50%, -50%); }}
+        .corner-tr {{ top: 25px; right: 25px; transform: translate(50%, -50%); }}
+        .corner-bl {{ bottom: 25px; left: 25px; transform: translate(-50%, 50%); }}
+        .corner-br {{ bottom: 25px; right: 25px; transform: translate(50%, 50%); }}
 
         .title {{
             text-align: center;
@@ -95,7 +94,6 @@ FESTIVE_HTML_TEMPLATE = '''<!DOCTYPE html>
             font-size: 28px;
             color: {primary};
             margin: 0 0 5px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             letter-spacing: 2px;
         }}
 
@@ -176,13 +174,36 @@ FESTIVE_HTML_TEMPLATE = '''<!DOCTYPE html>
             width: 7.5in;
             height: 10in;
             margin: 0 auto 20px;
-            padding: 0.4in;
+            padding: 0.35in;
             background: linear-gradient(135deg, {bg} 0%, #FFFFFF 50%, {bg} 100%);
             border: 8px double {border};
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
             position: relative;
             overflow: hidden;
+        }}
+
+        .key-page .title {{
+            margin-bottom: 8px;
+        }}
+
+        .key-page .title h1 {{
+            font-size: 24px;
+            margin-bottom: 2px;
+        }}
+
+        .key-page .title h2 {{
+            font-size: 16px;
+        }}
+
+        .key-page .subtitle {{
+            font-size: 12px;
+            margin-bottom: 8px;
+        }}
+
+        .key-page .footer {{
+            margin-top: 10px;
+            font-size: 10px;
         }}
 
         .key-table {{
@@ -232,40 +253,40 @@ FESTIVE_HTML_TEMPLATE = '''<!DOCTYPE html>
         .key-grid {{
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px 20px;
-            margin-top: 15px;
+            gap: 4px 16px;
+            margin-top: 10px;
             font-family: 'Mountains of Christmas', cursive;
         }}
 
         .key-item {{
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 4px 0;
+            gap: 6px;
+            padding: 3px 0;
             border-bottom: 1px dotted {border};
-            font-size: 11px;
+            font-size: 10px;
         }}
 
         .key-item .emoji {{
-            font-size: 16px;
-            min-width: 24px;
+            font-size: 14px;
+            min-width: 22px;
             text-align: center;
         }}
 
         .key-item .desc {{
             flex: 1;
-            line-height: 1.2;
+            line-height: 1.15;
         }}
 
         .key-section-header {{
             grid-column: 1 / -1;
             background: linear-gradient(90deg, {secondary}, {primary});
             color: white;
-            padding: 6px 10px;
+            padding: 4px 8px;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             border-radius: 4px;
-            margin-top: 8px;
+            margin-top: 6px;
             text-align: center;
             font-family: 'Mountains of Christmas', cursive;
         }}
@@ -406,7 +427,7 @@ def create_festive_html(
     subtitles = {
         "vintage_christmas_films": (
             "Santa Claus (1898) &bull; A Winter Straw Ride (1906) &bull; "
-            "The Night Before Christmas (1905) &bull; The Christmas Burglars (1908)"
+            "The Night Before Christmas (1905) &bull; A Trap for Santa Claus (1909)"
         ),
         "meet_me_in_st_louis": "A Musical Journey Through the Seasons",
     }
@@ -436,10 +457,10 @@ def create_festive_html(
         # Group by film for vintage christmas
         if game == "vintage_christmas_films":
             films = [
-                ("Santa Claus (1898)", 1, 8),
-                ("A Winter Straw Ride (1906)", 9, 15),
-                ("The Night Before Christmas (1905)", 16, 23),
-                ("The Christmas Burglars (1908)", 24, 30),
+                ("Santa Claus (1898)", 1, 2),
+                ("A Winter Straw Ride (1906)", 3, 8),
+                ("The Night Before Christmas (1905)", 9, 16),
+                ("A Trap for Santa Claus (1909)", 17, 30),
             ]
             for film_name, start, end in films:
                 rows.append(f'<div class="key-section-header">{film_name}</div>')
@@ -537,7 +558,9 @@ def html_to_pdf(html_file: str, pdf_file: str) -> str:
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
-        page.goto(f"file://{html_path}")
+        page.goto(f"file://{html_path}", wait_until="networkidle")
+        # Wait for Google Fonts to load
+        page.wait_for_function("document.fonts.ready")
         page.pdf(path=str(pdf_path), format="Letter", print_background=True)
         browser.close()
 

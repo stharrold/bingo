@@ -25,6 +25,7 @@ podman-compose run --rm dev ruff check .              # Lint
 podman-compose run --rm dev ruff check --fix .        # Auto-fix lint
 podman-compose run --rm dev bingo key                 # Generate key PDF
 podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
+podman-compose run --rm dev bingo festive -n 30 --pdf # Generate festive HTML+PDF
 ```
 
 ## Architecture
@@ -33,7 +34,8 @@ podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
 - `data.py` - Game definitions as `BingoItem(order, emoji, description)` lists
 - `card.py` - Card generation algorithm (see below)
 - `pdf.py` - PDF rendering with ReportLab and bundled Noto Emoji font
-- `cli.py` - Entry point (`bingo key`, `bingo cards`)
+- `html_pdf.py` - Festive HTML templates with Playwright PDF export
+- `cli.py` - Entry point (`bingo key`, `bingo cards`, `bingo festive`)
 
 **Card generation algorithm (`card.py`):**
 1. Place `win_at` number in random cell
@@ -43,6 +45,8 @@ podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
 5. Validate via simulation; retry if needed
 
 **Font handling (`pdf.py`):** Noto Emoji font bundled in `fonts/` - do not gitignore.
+
+**Festive cards (`html_pdf.py`):** Google Fonts (Mountains of Christmas) loaded via HTML, converted to PDF with Playwright. Uses `document.fonts.ready` to ensure fonts load before PDF generation.
 
 ## Adding New Games
 
@@ -56,6 +60,10 @@ To add a new movie/game:
    - `order`: Sequential number (1-30)
    - `emoji`: Unicode emoji string (e.g., "\U0001F3B5\U0001F3A1")
    - `description`: Quote or song title from the movie
+
+3. For festive cards, also update `html_pdf.py`:
+   - Add film ranges to the `films` list in `create_festive_html()`
+   - Update subtitle in `subtitles` dict
 
 ## Quality Gates
 
