@@ -131,7 +131,7 @@ def test_generate_festive_cards_vintage(vintage_items, temp_dir):
         num_cards=5,
         output_file=output_file,
         game="vintage_christmas_films",
-        win_at=15,  # Test custom win_at
+        win_at=20,  # Use default win_at
     )
 
     assert os.path.exists(result)
