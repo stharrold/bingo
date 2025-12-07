@@ -25,6 +25,7 @@ podman-compose run --rm dev ruff check .              # Lint
 podman-compose run --rm dev ruff check --fix .        # Auto-fix lint
 podman-compose run --rm dev bingo key                 # Generate key PDF
 podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
+podman-compose run --rm dev bingo festive -n 30 --pdf # Generate festive HTML+PDF
 ```
 
 ## Architecture
@@ -33,7 +34,8 @@ podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
 - `data.py` - Game definitions as `BingoItem(order, emoji, description)` lists
 - `card.py` - Card generation algorithm (see below)
 - `pdf.py` - PDF rendering with ReportLab and bundled Noto Emoji font
-- `cli.py` - Entry point (`bingo key`, `bingo cards`)
+- `html_pdf.py` - Festive HTML templates with Playwright PDF export
+- `cli.py` - Entry point (`bingo key`, `bingo cards`, `bingo festive`)
 
 **Card generation algorithm (`card.py`):**
 1. Place `win_at` number in random cell
@@ -44,6 +46,13 @@ podman-compose run --rm dev bingo cards -n 20         # Generate 20 cards
 
 **Font handling (`pdf.py`):** Noto Emoji font bundled in `fonts/` - do not gitignore.
 
+**Festive cards (`html_pdf.py`):** Google Fonts (Mountains of Christmas) loaded via HTML, converted to PDF with Playwright. Uses `document.fonts.ready` to ensure fonts load before PDF generation.
+
+## Available Games
+
+- `meet_me_in_st_louis` - Meet Me In St. Louis (1944) musical
+- `vintage_christmas_films` - 4 silent films (1898-1909): Santa Claus, A Winter Straw Ride, The Night Before Christmas, A Trap for Santa Claus
+
 ## Adding New Games
 
 To add a new movie/game:
@@ -51,11 +60,25 @@ To add a new movie/game:
 1. Edit `src/bingo/data.py`:
    - Create a new list of `BingoItem` objects
    - Add to `get_game_data()` function
+   - Add to `cli.py` GAME_CHOICES and GAME_FILE_PREFIXES
 
 2. Each item needs:
    - `order`: Sequential number (1-30)
    - `emoji`: Unicode emoji string (e.g., "\U0001F3B5\U0001F3A1")
-   - `description`: Quote or song title from the movie
+   - `description`: Quote or event from the movie
+
+3. For festive cards, also update `html_pdf.py`:
+   - Add color scheme to `FESTIVE_COLORS` dict
+   - Add sections list in `create_festive_html()` for key organization
+   - Update subtitle in `subtitles` dict
+
+## Output Files
+
+Output files are git-tracked in `output/` using hyphenated naming:
+- `<slug>_card_NN.pdf` - Individual cards
+- `<slug>_cards-festive.html/pdf` - Festive card collection
+- `<slug>_key.pdf` - Answer key
+- `<slug>_introduction.md/pdf` - Movie introduction (optional)
 
 ## Quality Gates
 
