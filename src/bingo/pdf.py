@@ -20,7 +20,15 @@ GAME_TITLES = {
 # Font paths - can be overridden
 FONT_DIR = Path(__file__).parent.parent.parent / "fonts"
 NOTO_EMOJI_PATH = FONT_DIR / "NotoEmoji-VariableFont.ttf"
-NOTO_SANS_PATH = Path.home() / "Library/Fonts/NotoSans-Regular.ttf"
+# Cross-platform font search: check common locations, fallback to Helvetica
+_NOTO_SANS_CANDIDATES = [
+    FONT_DIR / "NotoSans-Regular.ttf",  # Bundled (preferred)
+    Path.home() / "Library/Fonts/NotoSans-Regular.ttf",  # macOS user
+    Path("/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf"),  # Linux
+    Path("/usr/share/fonts/noto/NotoSans-Regular.ttf"),  # Linux alt
+    Path("C:/Windows/Fonts/NotoSans-Regular.ttf"),  # Windows
+]
+NOTO_SANS_PATH = next((p for p in _NOTO_SANS_CANDIDATES if p.exists()), None)
 
 _fonts_registered = False
 
@@ -36,7 +44,7 @@ def register_fonts() -> None:
         pdfmetrics.registerFont(TTFont("NotoEmoji", str(NOTO_EMOJI_PATH)))
 
     # Register Noto Sans for regular text (fallback to Helvetica)
-    if NOTO_SANS_PATH.exists():
+    if NOTO_SANS_PATH and NOTO_SANS_PATH.exists():
         pdfmetrics.registerFont(TTFont("NotoSans", str(NOTO_SANS_PATH)))
 
     _fonts_registered = True
@@ -44,7 +52,7 @@ def register_fonts() -> None:
 
 def get_text_font() -> str:
     """Get the font name for regular text."""
-    if NOTO_SANS_PATH.exists():
+    if NOTO_SANS_PATH and NOTO_SANS_PATH.exists():
         return "NotoSans"
     return "Helvetica"
 
