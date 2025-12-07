@@ -133,6 +133,18 @@ main (production) ← develop (integration) ← contrib/<username> (active) ← 
 - **NEVER proactively create documentation files** unless explicitly requested
 - **Font bundled**: Noto Emoji font is in `fonts/` - don't gitignore it
 
+## GitHub Actions Setup
+
+Claude Code integration requires a secret:
+
+1. **CLAUDE_CODE_OAUTH_TOKEN**: OAuth token for Claude Code API
+   - Generate at: https://console.anthropic.com/
+   - Add to repo: Settings → Secrets and variables → Actions → New repository secret
+
+Workflows (`.github/workflows/`):
+- `claude.yml` - Responds to @claude mentions in issues/PRs
+- `claude-code-review.yml` - Automatic PR reviews
+
 ## Reference Documentation
 
 - `WORKFLOW.md` - Workflow overview
