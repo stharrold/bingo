@@ -4,6 +4,9 @@ output/
 # Temporary files
 .tmp/
 
+# AgentDB state (runtime artifact)
+.claude-state/*.duckdb
+
 # Python
 __pycache__/
 *.py[cod]
